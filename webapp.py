@@ -1,21 +1,8 @@
 
 import os, os.path
-import random
-import string
+
 import cherrypy
-import threading
-from selenium.webdriver import Firefox
-from selenium.webdriver.firefox.options import Options
-opts = Options()
-opts.set_headless()
-assert opts.headless  # Operating in headless mode
-browser = Firefox( executable_path='./resources/geckodriver',options=opts)
-browser.get('https://duckduckgo.com')
-class MyThread(threading.Thread):
-    def run(self):
-        print("{} started!".format(self.getName()))
-        browser.get('https://duckduckgo.com')
-        print("{} finished!".format(self.getName()))
+
 
 
 def readFile(path):
