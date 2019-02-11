@@ -15,18 +15,13 @@ def readFile(path):
 class HelloWorld(object):
     content  = "";
 
-
-    def filter(self,str):
-      return str
-
     @cherrypy.expose
     def index(self):
         return readFile("static/index.html").replace("CONTENT",self.content)
 
-
     @cherrypy.expose
     def form(self, msg,flag):
-        self.content+=this.filter(msg)+"\n<br>";
+        self.content+=msg+"\n<br>";
         raise cherrypy.HTTPRedirect('/')
 
 if __name__ == '__main__':
