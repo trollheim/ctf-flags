@@ -17,6 +17,10 @@ class HelloWorld(object):
 
 
     def filter(self,str):
+      _str = "";
+      while (str != _str):
+        _str = str
+        str = _str.replace("<script>", "").replace("<//script>", "")
       return str
 
     @cherrypy.expose
@@ -26,7 +30,7 @@ class HelloWorld(object):
 
     @cherrypy.expose
     def form(self, msg,flag):
-        self.content+=this.filter(msg)+"\n<br>";
+        self.content+=self.filter(msg)+"\n<br>";
         raise cherrypy.HTTPRedirect('/')
 
 if __name__ == '__main__':

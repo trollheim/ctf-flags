@@ -15,13 +15,26 @@ def readFile(path):
 class HelloWorld(object):
     content  = "";
 
+    def filter(self, str):
+        _str = "";
+        str=str.lower();
+        if (str.contains("onerror")):
+            str = "invalid string";
+        while (str != _str):
+            _str = str
+            str = _str.replace("<string>", "").replace("<//string>", "")
+        return str
+
+
     @cherrypy.expose
     def index(self):
         return readFile("static/index.html").replace("CONTENT",self.content)
 
+
+
     @cherrypy.expose
     def form(self, msg,flag):
-        self.content+=msg+"\n<br>";
+        self.content+=self.filter(msg)+"\n<br>";
         raise cherrypy.HTTPRedirect('/')
 
 if __name__ == '__main__':
