@@ -1,4 +1,9 @@
 FROM flag-base
+
+
+
+ARG flag=flag1
+
 #FROM python:3.7-slim
 
 # Set the working directory to /app
@@ -9,7 +14,7 @@ COPY start.sh /app
 
 COPY static /app/static
 COPY node /app/node
-
+RUN echo "$flag" >> /app/flag.txt
 
 # Make port 80 available to the world outside this container
 EXPOSE 8080

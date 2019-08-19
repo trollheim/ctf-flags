@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Flag 4</title>
+<link rel="stylesheet" href="res/bootstrap.min.css">
+<script src="res/jquery.min.js"></script>
+<script src="res/bootstrap.min.js"></script>
+<script>
+function validateForm() {
+
+    if (document.forms["someForm"]["msg"].value === "" && document.forms["someForm"]["flag"].value === "") {
+        alert("please fill the form");
+        return false;
+    }
+}
+
+
+</script>
+</head>
+<body>
+<nav class="navbar navbar-dark bg-primary">
+ <a class="btn btn-info navbar-btn" href="logout" role="button">Logout</a>
+</nav>
+
+
+<form action="/form" onsubmit="return validateForm()" method="post">
+  <div class="form-group">
+    <label for="messageIn">Stored message will go here</label>
+    <input type="text" class="form-control" name="msg" id="messageIn" aria-describedby="msgHelp" placeholder="Enter message">
+    <small id="msgHelp" class="form-text text-muted">Message will be added to panel below</small>
+  </div>
+  <div class="form-group">
+    <label for="flagIn">This field will be populated by flag</label>
+    <input type="text" name="flag" class="form-control" id="flagIn" placeholder="fla">
+  </div>
+
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+<div class="container">
+  CONTENT
+</div>
+</body>
+</html>

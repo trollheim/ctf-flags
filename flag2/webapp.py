@@ -1,8 +1,23 @@
-
 import os, os.path
-
+import random
 import cherrypy
+import csv
 
+
+class User:
+    def __init__(self,user,password):
+        self.user = user
+        self.password = password
+        self.token = hash((self,  random.randint(0,1024)))
+
+
+    def validate(self,usr,pwd):
+        return self.user == usr and self.password == pwd
+
+    def token(self):
+        return self.token
+
+    content = "";
 
 
 def readFile(path):
@@ -10,10 +25,16 @@ def readFile(path):
     contents =f.read()
     return contents
 
+users = []
+
+with open('users.txt') as csv_file:
+    csv_reader = csv.reader(csv_file, delimiter=':')
+    for row in csv_reader:
+        users.append(User(row[0],row[1]))
 
 
-class HelloWorld(object):
-    content  = "";
+
+class Flag02:
 
 
     def filter(self,str):
@@ -23,21 +44,66 @@ class HelloWorld(object):
         str = _str.replace("<script>", "").replace("<//script>", "")
       return str
 
+
     @cherrypy.expose
     def index(self):
-        return readFile("static/index.html").replace("CONTENT",self.content)
+        if 'token' in cherrypy.session.keys():
+            user = self.findUser()
+            return readFile("static/page.html").replace("CONTENT",user.content)
+        return readFile("static/index.html")
 
+
+    @cherrypy.expose
+    def login(self,user,password):
+        for u in users:
+            if u.user == user and u.password == password:
+                cherrypy.session['token'] = u.token
+                # return "logged"
+        raise cherrypy.HTTPRedirect('/')
+
+    @cherrypy.expose
+    def bot(self):
+        return readFile("static/bot.html")
+
+
+    @cherrypy.expose
+    def logout(self):
+        del cherrypy.session['token']
+        raise cherrypy.HTTPRedirect('/')
+
+
+    def findUser(self):
+        token = cherrypy.session['token'];
+
+        for u in users:
+            if u.token == token:
+                return u;
+        del cherrypy.session['token']
+        raise cherrypy.HTTPRedirect('/')
 
     @cherrypy.expose
     def form(self, msg,flag):
-        self.content+=self.filter(msg)+"\n<br>";
+        user = self.findUser()
+        user.content+= '<div class="alert alert-info" role="alert">' +filter(msg) +'</div>';
+        raise cherrypy.HTTPRedirect('/')
+
+    @cherrypy.expose
+    def bform(self, msg,flag):
+        for user in users:
+            user.content+= '<div class="alert alert-info" role="alert">' +msg +'</div>';
         raise cherrypy.HTTPRedirect('/')
 
 if __name__ == '__main__':
     conf = {
+        '/res':
+            {'tools.staticdir.on': True,
+             'tools.staticdir.dir':  "./static/res"
+             },
         '/': {
             'tools.sessions.on': True,
-            'tools.staticdir.root': os.path.abspath(os.getcwd())
+            'tools.staticdir.root': os.path.abspath(os.getcwd()),
+            # 'tools.auth_basic.checkpassword': validate_password,
+
         },
         '/static': {
             'tools.staticdir.on': True,
@@ -45,6 +111,11 @@ if __name__ == '__main__':
         }
     }
     cherrypy.config.update({'server.socket_host': '0.0.0.0'})
-    cherrypy.quickstart(HelloWorld(), '/', conf)
+    cherrypy.quickstart(Flag02(), '/', conf)
+
+
+
+
+
 
 

@@ -1,7 +1,8 @@
-from flag3.webapp import  HelloWorld;
+from flag3.webapp import  Flag03;
 
-hello = HelloWorld();
+flag = Flag03();
 
-assert hello.filter("a<script>a") == 'aa'
-assert hello.filter("a<scri<scri<script>pt>pt>a") == 'aa'
-assert hello.filter("a<SCri<scri<script>pt>pt>a") == 'aa'
+
+assert flag.filter("a<script>a") == 'aa'
+assert flag.filter("a<scri<scri<script>pt>pt>a") == 'aa'
+assert flag.filter("a<SCri<scri<script>pt>pt>a") == 'aa'
