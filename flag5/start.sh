@@ -1,1 +1,1 @@
-python3.7 webapp.py &
+python3.6 webapp.py

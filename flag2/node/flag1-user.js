@@ -1,4 +1,5 @@
 const puppeteer = require('puppeteer');
+var fs = require('fs');
 
 var path = process.cwd();
 var buffer = fs.readFileSync(path + "//flag.txt");
