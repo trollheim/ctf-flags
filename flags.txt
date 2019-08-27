@@ -1,21 +1,20 @@
 1 xss
 2 xss filter for <script> case sensitive
 3 xss filter for <script> case insensitive
-4 xss jsf**k
-
+(require fix) 4 xss jsf**k
 5 sqli  - not filtered, injection via search
 6 sqli  - filtered (no whitespace) via search
-7 sqli  - search escaped, but paging not
+7 nosqli
 
-8 nosqli
-9 broken auth password/account enum
-10 broken auth session
-11 weak cryptographic algorithms/ download code and hack des
-12 xml Billion laughs attack/xml bomb
-13 xml obtaining flag from file
-14 broken access JWT none
-15 broken access http://example.com/app/accountInfo?acct=notmyacct
-16 broken access Bypassing access control checks by modifying the URL, internal application state, or the HTML page, or simply using a custom API attack tool.
-17 A6-Security Misconfiguration// old opencsd bufg -> .git commited and obtainable list of files, one includes login test with hardcoded credentials
-
+8 broken auth password/account enum
+9 broken auth session
+10 weak cryptographic algorithms/ download code and hack des
+11 xml Billion laughs attack/xml bomb
+12 xml obtaining flag from file
+13 broken access JWT none
+14 broken access http://example.com/app/accountInfo?acct=notmyacct
+15 broken access Bypassing access control checks by modifying the URL, internal application state, or the HTML page, or simply using a custom API attack tool.
+16 A6-Security Misconfiguration// old opencsd bufg -> .git commited and obtainable list of files, one includes login test with hardcoded credentials
+17 RCE - file upload
+18 Remote File Inclusion - gallery?
 

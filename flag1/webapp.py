@@ -14,8 +14,6 @@ class User:
     def validate(self,usr,pwd):
         return self.user == usr and self.password == pwd
 
-    def token(self):
-        return self.token
 
     content = "";
 
@@ -33,12 +31,21 @@ with open('users.txt') as csv_file:
         users.append(User(row[0],row[1]))
 
 
-
-
-
-
-
 class Flag01:
+
+
+
+    def _cp_dispatch(self, vpath):
+
+        if len(vpath) == 2 and  vpath.pop(0) == 'bot':
+            cherrypy.request.params['userid'] = vpath.pop(0)
+
+        return vpath
+
+    @cherrypy.expose
+    def bot(self, userid):
+        user = users[int(userid)]
+        return readFile("static/bot.html").replace("CONTENT", user.content)
 
     @cherrypy.expose
     def index(self):
@@ -56,9 +63,6 @@ class Flag01:
                 # return "logged"
         raise cherrypy.HTTPRedirect('/')
 
-    @cherrypy.expose
-    def bot(self):
-        return readFile("static/bot.html")
 
 
     @cherrypy.expose
@@ -79,8 +83,12 @@ class Flag01:
     @cherrypy.expose
     def form(self, msg,flag):
         user = self.findUser()
-        user.content+= '<div class="alert alert-info" role="alert">' +msg +'</div>';
+        user.content = '<div class="alert alert-info" role="alert">' +msg +'</div>' + user.content
         raise cherrypy.HTTPRedirect('/')
+
+
+
+
 
     @cherrypy.expose
     def bform(self, msg,flag):
@@ -89,6 +97,9 @@ class Flag01:
         raise cherrypy.HTTPRedirect('/')
 
 if __name__ == '__main__':
+
+
+
     conf = {
         '/res':
             {'tools.staticdir.on': True,

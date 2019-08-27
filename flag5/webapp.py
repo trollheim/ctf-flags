@@ -15,8 +15,6 @@ class User:
     def validate(self, usr, pwd):
         return self.user == usr and self.password == pwd
 
-    def token(self):
-        return self.token
 
     content = "";
 
@@ -37,8 +35,6 @@ with open('users.txt') as csv_file:
 
 class Flag05:
 
-    def filter(self, str):
-        return ''.join(filter(lambda x: not (x.isspace() or x.isalpha()), str))
 
     @cherrypy.expose
     def index(self):
@@ -86,18 +82,13 @@ class Flag05:
             rows = cur.fetchall()
             result = []
             for row in rows:
-                print(row)
-                result.append( {
-                    'id' : str(row[0]),
-                    'fname': row[1],
-                    'sname': row[2],
-                    'credits': row[3]
+               result.append( {
+                  'id' : str(row[0]),
+                  'fname': row[1],
+                  'sname': row[2],
+                  'credits': row[3]
                 })
-            print(result)
             return result
-
-
-
         except Error as e:
             print (e)
             return str(e)

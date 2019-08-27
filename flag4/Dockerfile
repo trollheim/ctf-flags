@@ -6,6 +6,7 @@ ARG flag=flag4
 # Copy the current directory contents into the container at /app
 COPY webapp.py /app
 COPY start.sh /app
+COPY users.txt  /app
 
 COPY static /app/static
 COPY node /app/node
