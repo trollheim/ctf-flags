@@ -79,16 +79,26 @@ class Flag04:
         del cherrypy.session['token']
         raise cherrypy.HTTPRedirect('/')
 
+
+
+
+
+    def payload(self,msg):
+
+        return '<script>var payload = "'+msg+'",res = eval('+msg+ ');\n var element = document.getElementById("container"); element.innerHTML +=\'<span class ="label label-default">\'+payload+\' = \'+res+\'</span><br>\''' </script>'
+
     @cherrypy.expose
     def form(self, msg, flag):
         user = self.findUser()
-        user.content += '<div class="alert alert-info" role="alert">' + filter(msg) + '</div>';
+
+
+        user.content += self.payload(msg);
         raise cherrypy.HTTPRedirect('/')
 
     @cherrypy.expose
     def bform(self, msg, flag):
         for user in users:
-            user.content += '<div class="alert alert-info" role="alert">' + msg + '</div>';
+            user.content += self.payload(msg);
         raise cherrypy.HTTPRedirect('/')
 
 

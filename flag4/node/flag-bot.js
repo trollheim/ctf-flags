@@ -50,7 +50,7 @@ function sleep(ms){
            response = await page.goto('http://localhost:8080/bot/' + i);
 
            await page.waitFor('#msg');
-           await page.type('#msg', 'message');
+           await page.type('#msg', '1+1');
            await page.waitFor('#flag');
            await page.type('#flag', flag);
            await page.waitFor('#submit');
