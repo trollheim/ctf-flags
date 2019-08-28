@@ -11,7 +11,7 @@ COPY static /app/static
 COPY data /app/data
 
 RUN usergen.sh
-RUN echo "$flag" >> /app/flag.txt
+RUN echo "$flagval" >> /app/flag.txt
 
 EXPOSE 8080
 

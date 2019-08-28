@@ -1,11 +1,8 @@
 import os, os.path
 
 import cherrypy
-from xml.etree.ElementTree import fromstring
-
-from xml.etree.ElementTree import ParseError
-import multiprocessing
-
+import xml.sax
+from io import StringIO
 
 def readFile(path):
     f=open(path, "r")
@@ -13,14 +10,24 @@ def readFile(path):
     return contents
 
 
-def parse(document,q):
-    try:
-        fromstring(document)
-        q.put(True)
-    except ParseError as e:
-        print("Error")
-        print(e)
-        q.put(False)
+class MyHandler(xml.sax.ContentHandler):
+    def __init__(self):
+        xml.sax.ContentHandler.__init__(self)
+        self.result = ""
+        self.depth = 0
+
+    def startElement(self, name, attrs):
+        self.chars = ""
+        self.depth =  self.depth+1
+    def characters(self, content):
+        self.chars += content
+    def endElement(self, name):
+        self.depth = self.depth -1
+        element = ""
+        for i in range(self.depth):
+            element = element+ " "
+        element = element+ name+" = "+self.chars+" <br>"
+        self.result=self.result+element
 
 
 class Flag11:
@@ -32,23 +39,14 @@ class Flag11:
 
     @cherrypy.expose
     def parse(self,document):
-        if len (document)>1024:
-            return "File is too big"
+        handler = MyHandler()
+        parser = xml.sax.make_parser()
+        parser.setContentHandler(handler)
+        parser.setFeature(xml.sax.handler.feature_external_ges, 1)
+        parser.parse(StringIO(document))
+        return handler.result
 
-        q = multiprocessing.Queue()
-        p = multiprocessing.Process(target=parse, name="XMLParse", args=(document,q))
-        p.start()
-        p.join(10)
 
-        if p.is_alive():
-            p.terminate()
-            p.kill()
-            p.join()
-            return readFile("flag.txt")
-
-        if q.get() != True:
-            return "Error processing data"
-        return "OK"
 
 
 
