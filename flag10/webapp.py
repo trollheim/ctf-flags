@@ -4,15 +4,14 @@ import cherrypy
 import csv
 import json
 import base64
+from cherrypy.lib import static
+
 
 class User:
     def __init__(self,user,password):
         self.user = user
         self.password = password
-        token = json.dumps({'token':  str(hash((self,  random.randint(0,1024)))), 'admin': False})
-
-        self.token = str(base64.b64encode(token.encode("utf-8")),"utf-8")
-        print(self.token[0]+" "+self.token)
+        self.token = hash((self, random.randint(0, 1024)))
 
 
 
@@ -36,41 +35,44 @@ with open('users.txt') as csv_file:
         print(row)
         users.append(User(row[0],row[1]))
 
+localDir = os.path.dirname(__file__)
+absDir = os.path.join(os.getcwd(), localDir)
 
-class Flag09:
+class Flag10:
 
     @cherrypy.expose
-    def index(self):
-        if 'token' in  cherrypy.session.keys():
-            print("tok")
-            print(cherrypy.request.cookie['token'].value[0])
-            cookie = cherrypy.request.cookie
-
-            tokenb64 = base64.b64decode(cookie['token'].value)
-            token = json.loads(tokenb64)
-            content = "Log in as admin to get flag"
-            if token['admin']:
-                content = readFile("flag.txt")
-
-            return readFile("static/page.html").replace("CONTENT",content );
+    def index(self,**params):
         return readFile("static/index.html")
+
+
+    @cherrypy.expose
+    def data(self):
+        path = os.path.join(absDir, 'hackedusers.txt')
+        return static.serve_download(path)
+
+    @cherrypy.expose
+    def dict(self):
+        path = os.path.join(absDir, "./data/passwords.txt")
+        return static.serve_download(path)
+
+    @cherrypy.expose
+    def readme(self):
+        cherrypy.response.headers['Content-Type'] = "text/plain"
+        cherrypy.response.headers['Content-Disposition'] = "attachment; filename=readme.txt"
+        return "HAIL HYDRA!!!"
 
 
     @cherrypy.expose
     def login(self,user,password):
         for u in users:
-            if u.user == user and u.password == password:
-                cookie = cherrypy.response.cookie
-                print(u.token)
-                print(type(u.token))
-                cookie['token'] = u.token
-                cookie['token']['path'] = '/'
-                cookie['token']['max-age'] = 3600
-                cookie['token']['version'] = 1
+            if u.user == user:
+                if u.password == password:
+                    flag = readFile("flag.txt")
+                    return flag
+            raise cherrypy.HTTPRedirect('/?error=2')
 
-                cherrypy.session['token'] = u.token
-                # return "logged"
-        raise cherrypy.HTTPRedirect('/')
+
+        raise cherrypy.HTTPRedirect('/?error=1')
 
 
 
@@ -116,6 +118,6 @@ if __name__ == '__main__':
         }
     }
     cherrypy.config.update({'server.socket_host': '0.0.0.0'})
-    cherrypy.quickstart(Flag09(), '/', conf)
+    cherrypy.quickstart(Flag10(), '/', conf)
 
 

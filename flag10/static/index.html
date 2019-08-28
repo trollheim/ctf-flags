@@ -4,10 +4,11 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Flag 9 Login</title>
+<title>Flag 10 Login</title>
 <link rel="stylesheet" href="res/bootstrap.min.css">
 <script src="res/jquery.min.js"></script>
 <script src="res/bootstrap.min.js"></script>
+
 <style type="text/css">
 	.login-form {
 		width: 340px;
@@ -53,7 +54,51 @@
     <p class="text-center"><a href="#">Create an Account</a></p>
 </div>
 
+<div id="error" class="alert alert-danger">
+
+</div>
+<div class="container">
+
+  <div class="well">
 
 
+There was a data breach in SuperApp.com, their list of their users together with passwords is available in darknet. Can you use them to break into this system?
+
+ </div>
+      <div class="well">
+<div class="panel panel-default">
+  <div class="panel-heading">DARKNET REPO</div>
+  <div class="panel-body">
+  <ul class="list-group">
+      <a href="data" class="list-group-item list-group-item-warning">STOLEN DATA</a>
+      <a href="dict" class="list-group-item list-group-item-warning">PASSWORD DICTIONARY</a>
+      <a href="readme" class="list-group-item list-group-item-warning">README.TXT</a>
+
+</ul>
+
+  </div>
+</div>
+      </div>
+
+    </div>
+<script>
+
+var urlParams = new URLSearchParams(window.location.search);
+
+if (urlParams.has('error')){
+    var error =urlParams.get('error')
+    if (error ==1){
+        $( "#error" ).append( $( " <strong>User Not found!</strong> " ) );
+
+    }
+    if (error ==2){
+        $( "#error" ).append( $( " <strong>Incorrect password!</strong> " ) );
+    }
+
+} // true
+console.log(urlParams.get('action')); // "edit"
+
+</script>
 </body>
+
 </html>
