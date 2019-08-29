@@ -1,17 +1,13 @@
 FROM flag-base
-ARG flagval=flag8
+ARG flagval=flag9
 
 
-
-RUN apt-get update && apt-get install -y mongodb
 # Copy the current directory contents into the container at /app
 COPY webapp.py /app
 COPY start.sh /app
-COPY inseruser.js /app
 
 COPY static /app/static
-
-RUN pip3 install pymongo
+COPY users.txt  /app
 
 RUN echo "$flagval" >> /app/flag.txt
 

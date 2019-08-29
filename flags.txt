@@ -5,11 +5,11 @@
 5 sqli  - not filtered, injection via search
 6 sqli  - filtered (no whitespace) via search
 7 nosqli
-8 broken auth password/account enum
-9 broken auth session
+8 broken auth session
+9 xml obtaining flag from file
 10 weak cryptographic algorithms/ download code and hack des
 11 xml Billion laughs attack/xml bomb
-12 xml obtaining flag from file
+
 
 13 broken access JWT none
 14 broken access http://example.com/app/accountInfo?acct=notmyacct

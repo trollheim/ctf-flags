@@ -1,97 +1,57 @@
 import os, os.path
-import random
+
 import cherrypy
-import csv
-import json
-import base64
-
-class User:
-    def __init__(self,user,password):
-        self.user = user
-        self.password = password
-        token = json.dumps({'token':  str(hash((self,  random.randint(0,1024)))), 'admin': False})
-
-        self.token = str(base64.b64encode(token.encode("utf-8")),"utf-8")
-        print(self.token[0]+" "+self.token)
-
-
-
-    def validate(self,usr,pwd):
-        return self.user == usr and self.password == pwd
-
-
-    content = "";
-
+import xml.sax
+from io import StringIO
 
 def readFile(path):
     f=open(path, "r")
     contents =f.read()
     return contents
 
-users = []
 
-with open('users.txt') as csv_file:
-    csv_reader = csv.reader(csv_file, delimiter=':')
-    for row in csv_reader:
-        print(row)
-        users.append(User(row[0],row[1]))
+class MyHandler(xml.sax.ContentHandler):
+    def __init__(self):
+        xml.sax.ContentHandler.__init__(self)
+        self.result = ""
+        self.depth = 0
+
+    def startElement(self, name, attrs):
+        self.chars = ""
+        self.depth =  self.depth+1
+    def characters(self, content):
+        self.chars += content
+    def endElement(self, name):
+        self.depth = self.depth -1
+        element = ""
+        for i in range(self.depth):
+            element = element+ " "
+        element = element+ name+" = "+self.chars+" <br>"
+        self.result=self.result+element
 
 
 class Flag09:
 
     @cherrypy.expose
-    def index(self):
-        if 'token' in  cherrypy.session.keys():
-            print("tok")
-            print(cherrypy.request.cookie['token'].value[0])
-            cookie = cherrypy.request.cookie
-
-            tokenb64 = base64.b64decode(cookie['token'].value)
-            token = json.loads(tokenb64)
-            content = "Log in as admin to get flag"
-            if token['admin']:
-                content = readFile("flag.txt")
-
-            return readFile("static/page.html").replace("CONTENT",content );
+    def index(self,**params):
         return readFile("static/index.html")
 
 
     @cherrypy.expose
-    def login(self,user,password):
-        for u in users:
-            if u.user == user and u.password == password:
-                cookie = cherrypy.response.cookie
-                print(u.token)
-                print(type(u.token))
-                cookie['token'] = u.token
-                cookie['token']['path'] = '/'
-                cookie['token']['max-age'] = 3600
-                cookie['token']['version'] = 1
-
-                cherrypy.session['token'] = u.token
-                # return "logged"
-        raise cherrypy.HTTPRedirect('/')
+    def parse(self,document):
+        handler = MyHandler()
+        parser = xml.sax.make_parser()
+        parser.setContentHandler(handler)
+        parser.setFeature(xml.sax.handler.feature_external_ges, 1)
+        parser.parse(StringIO(document))
+        return handler.result
 
 
 
-    @cherrypy.expose
-    def logout(self):
-        try:
-            del cherrypy.session['token']
-        except:
-            print("error")
-        raise cherrypy.HTTPRedirect('/')
 
 
-    def findUser(self):
-        token = cherrypy.session['token'];
 
-        for u in users:
-            if u.token == token:
-                return u;
-        del cherrypy.session['token']
-        del cherrypy.response.cookie['token']
-        raise cherrypy.HTTPRedirect('/')
+
 
 
 

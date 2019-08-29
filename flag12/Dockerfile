@@ -6,10 +6,9 @@ ARG flagval=flag12
 COPY webapp.py /app
 COPY start.sh /app
 
-
 COPY static /app/static
-
-
+COPY users.txt  /app
+RUN pip install pyjwt
 RUN echo "$flagval" >> /app/flag.txt
 
 EXPOSE 8080
