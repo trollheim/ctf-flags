@@ -100,7 +100,7 @@ class Flag08:
             print(cherrypy.request.cookie['token'].value[0])
             cookie = cherrypy.request.cookie
             jws = cookie['token'].value
-            result = JWT.decode(jws,SECRET)
+            result = JWT().decode(jws,SECRET)
             if result[0]==False:
                 return readFile("static/index.html")
             token = result[1]
