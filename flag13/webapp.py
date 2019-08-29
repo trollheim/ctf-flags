@@ -2,18 +2,13 @@ import os, os.path
 import random
 import cherrypy
 import csv
-import json
-import base64
+
 
 class User:
     def __init__(self,user,password):
         self.user = user
         self.password = password
-        token = json.dumps({'token':  str(hash((self,  random.randint(0,1024)))), 'admin': False})
-
-        self.token = str(base64.b64encode(token.encode("utf-8")),"utf-8")
-        print(self.token[0]+" "+self.token)
-
+        self.token = hash((self,  random.randint(0,1024)))
 
 
     def validate(self,usr,pwd):
@@ -33,26 +28,30 @@ users = []
 with open('users.txt') as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=':')
     for row in csv_reader:
-        print(row)
         users.append(User(row[0],row[1]))
 
 
-class Flag08:
+class Flag01:
+
+
+
+    def _cp_dispatch(self, vpath):
+
+        if len(vpath) == 2 and  vpath.pop(0) == 'bot':
+            cherrypy.request.params['userid'] = vpath.pop(0)
+
+        return vpath
+
+    @cherrypy.expose
+    def bot(self, userid):
+        user = users[int(userid)]
+        return readFile("static/bot.html").replace("CONTENT", user.content)
 
     @cherrypy.expose
     def index(self):
-        if 'token' in  cherrypy.session.keys():
-            print("tok")
-            print(cherrypy.request.cookie['token'].value[0])
-            cookie = cherrypy.request.cookie
-
-            tokenb64 = base64.b64decode(cookie['token'].value)
-            token = json.loads(tokenb64)
-            content = "Log in as admin to get flag"
-            if token['admin']:
-                content = readFile("flag.txt")
-
-            return readFile("static/page.html").replace("CONTENT",content );
+        if 'token' in cherrypy.session.keys():
+            user = self.findUser()
+            return readFile("static/page.html").replace("CONTENT",user.content)
         return readFile("static/index.html")
 
 
@@ -60,14 +59,6 @@ class Flag08:
     def login(self,user,password):
         for u in users:
             if u.user == user and u.password == password:
-                cookie = cherrypy.response.cookie
-                print(u.token)
-                print(type(u.token))
-                cookie['token'] = u.token
-                cookie['token']['path'] = '/'
-                cookie['token']['max-age'] = 3600
-                cookie['token']['version'] = 1
-
                 cherrypy.session['token'] = u.token
                 # return "logged"
         raise cherrypy.HTTPRedirect('/')
@@ -76,10 +67,7 @@ class Flag08:
 
     @cherrypy.expose
     def logout(self):
-        try:
-            del cherrypy.session['token']
-        except:
-            print("error")
+        del cherrypy.session['token']
         raise cherrypy.HTTPRedirect('/')
 
 
@@ -90,10 +78,23 @@ class Flag08:
             if u.token == token:
                 return u;
         del cherrypy.session['token']
-        del cherrypy.response.cookie['token']
+        raise cherrypy.HTTPRedirect('/')
+
+    @cherrypy.expose
+    def form(self, msg,flag):
+        user = self.findUser()
+        user.content = '<div class="alert alert-info" role="alert">' +msg +'</div>' + user.content
         raise cherrypy.HTTPRedirect('/')
 
 
+
+
+
+    @cherrypy.expose
+    def bform(self, msg,flag):
+        for user in users:
+            user.content+= '<div class="alert alert-info" role="alert">' +msg +'</div>';
+        raise cherrypy.HTTPRedirect('/')
 
 if __name__ == '__main__':
 
@@ -116,6 +117,6 @@ if __name__ == '__main__':
         }
     }
     cherrypy.config.update({'server.socket_host': '0.0.0.0'})
-    cherrypy.quickstart(Flag08(), '/', conf)
+    cherrypy.quickstart(Flag01(), '/', conf)
 
 

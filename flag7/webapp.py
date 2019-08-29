@@ -23,12 +23,8 @@ class Flag07:
     @cherrypy.expose
     def login(self, user, password):
         query = "this.username == '" + user + "' && 'this.password' == '" + password + "'"
-        print(query)
-        print(self.mydb.users.find().count());
         if self.mydb.users.find({"$where": query}).count() > 0:
-            print ('ok')
             flag = readFile("flag.txt")
-            print (flag)
             return flag
                 # return "logged"
         raise cherrypy.HTTPRedirect('/')
