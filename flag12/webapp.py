@@ -97,7 +97,6 @@ class Flag08:
     def index(self):
         if 'token' in  cherrypy.session.keys():
 
-            print(cherrypy.request.cookie['token'].value[0])
             cookie = cherrypy.request.cookie
             jws = cookie['token'].value
             result = JWT().decode(jws,SECRET)

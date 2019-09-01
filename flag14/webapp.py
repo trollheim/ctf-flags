@@ -5,10 +5,14 @@ import csv
 
 
 class User:
-    def __init__(self,user,password):
+
+
+    def __init__(self,user,password,data):
         self.user = user
         self.password = password
+        self.data = data
         self.token = hash((self,  random.randint(0,1024)))
+        self.id = -1
 
 
     def validate(self,usr,pwd):
@@ -24,27 +28,34 @@ def readFile(path):
     return contents
 
 users = []
-
+users.append(User("admin", str(random.randint(0,1024**3)), readFile("flag.txt")))
 with open('users.txt') as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=':')
     for row in csv_reader:
-        users.append(User(row[0],row[1]))
+        users.append(User(row[0],row[1],"Can you get admin account details?" ))
+        random.shuffle(users)
+
+random.shuffle(users)
+for i in range(0,len(users)):
+    users[i].id = i+1
 
 
-class Flag13:
 
-
-
+class Flag14:
 
     @cherrypy.expose
     def index(self,**args):
         if 'token' in cherrypy.session.keys():
             user = self.findUser()
-            replace = 'Try to log in as admin'
-            if 'admin' in args.keys() and args['admin'].lower()== 'true':
-                print('admin' in args.keys() and args['admin'])
-                print(args['admin'])
-                replace = readFile("flag.txt")
+            replace = ''
+            try:
+                if 'user' in args.keys():
+                    uid = int(args['user'])
+                    replace = users[uid-1].data
+            except:
+                replace = "Error 131 - Userdata not found"
+
+
             return readFile("static/page.html").replace("CONTENT",replace)
         return readFile("static/index.html")
 
@@ -54,7 +65,7 @@ class Flag13:
         for u in users:
             if u.user == user and u.password == password:
                 cherrypy.session['token'] = u.token
-                raise cherrypy.HTTPRedirect('/?admin=false')
+                raise cherrypy.HTTPRedirect('/?user='+str(u.id))
                 # return "logged"
         raise cherrypy.HTTPRedirect('/')
 
@@ -100,6 +111,6 @@ if __name__ == '__main__':
         }
     }
     cherrypy.config.update({'server.socket_host': '0.0.0.0'})
-    cherrypy.quickstart(Flag13(), '/', conf)
+    cherrypy.quickstart(Flag14(), '/', conf)
 
 
