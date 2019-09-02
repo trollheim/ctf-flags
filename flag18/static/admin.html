@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Flag 18</title>
+<link rel="stylesheet" href="res/bootstrap.min.css">
+<script src="res/jquery.min.js"></script>
+<script src="res/bootstrap.min.js"></script>
+ <script>
+
+  var send = function () {
+
+  try {
+
+   var req = 'param='+ parseInt($("#num").val())
+   $.post( "execute",req, function( data ) {
+    $("#container").html(data);
+   }) ;
+   } catch(e) {
+   console.error(e)
+   alert("Invalid parameter")
+
+  };
+  }
+
+
+
+ </script>
+</head>
+<body>
+
+ <form class="navbar-form navbar-left" role="search">
+  <a href="#" class="navbar-brand"> 172.17.0.</a>
+  <div class="form-group">
+    <input id='num' type="number" class="form-control" placeholder="1">
+  </div>
+  <button type="button"  onclick="send()" class="btn btn-default">Ping</button>
+</form>
+<div id="container" class="container">
+
+</div>
+
+</body>
+</html>

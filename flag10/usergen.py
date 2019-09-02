@@ -24,6 +24,7 @@ for x in f:
 
 f = open("data/passwords.txt", "r")
 for x in f:
+    print(x)
     passwords.append(x.strip())
 
 

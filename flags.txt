@@ -9,13 +9,13 @@
 9 xml obtaining flag from file
 10 weak cryptographic algorithms/ download code and hack des/credential stuffing
 11 xml Billion laughs attack/xml bomb
-
-12 broken access JWT none (test)
-
+12 broken access JWT none
 13 broken access admin ?admin=true
 14 broken access http://example.com/app/accountInfo?acct=notmyacct
 15 broken access Bypassing access control checks by modifying the URL, internal application state, or the HTML page, or simply using a custom API attack tool.
-16 A6-Security Misconfiguration// old opencsd bufg -> .git commited and obtainable list of files, one includes login test with hardcoded credentials
-17 RCE - file upload
+16 robot hidden content
+17 A6-Security Misconfiguration// old opencsd bufg -> .git commited and obtainable list of files, one includes login test with hardcoded credentials
+
+17 RCE robot.txt
 18 Remote File Inclusion - gallery?
 
