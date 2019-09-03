@@ -31,21 +31,7 @@ with open('users.txt') as csv_file:
         users.append(User(row[0],row[1]))
 
 
-class Flag01:
-
-
-
-    def _cp_dispatch(self, vpath):
-
-        if len(vpath) == 2 and  vpath.pop(0) == 'bot':
-            cherrypy.request.params['userid'] = vpath.pop(0)
-
-        return vpath
-
-    @cherrypy.expose
-    def bot(self, userid):
-        user = users[int(userid)]
-        return readFile("static/bot.html").replace("CONTENT", user.content)
+class Flag13:
 
     @cherrypy.expose
     def index(self):
@@ -117,6 +103,6 @@ if __name__ == '__main__':
         }
     }
     cherrypy.config.update({'server.socket_host': '0.0.0.0'})
-    cherrypy.quickstart(Flag01(), '/', conf)
+    cherrypy.quickstart(Flag13(), '/', conf)
 
 

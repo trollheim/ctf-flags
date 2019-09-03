@@ -1,21 +1,20 @@
 1 xss
 2 xss filter for <script> case sensitive
 3 xss filter for <script> case insensitive
-(require fix) 4 xss jsf**k
+4 xss jsf**k
+
 5 sqli  - not filtered, injection via search
 6 sqli  - filtered (no whitespace) via search
 7 nosqli
-8 broken auth session
-9 xml obtaining flag from file
+8 session
+9  XXE xml obtaining flag from file
 10 weak cryptographic algorithms/ download code and hack des/credential stuffing
 11 xml Billion laughs attack/xml bomb
 12 broken access JWT none
-13 broken access admin ?admin=true
-14 broken access http://example.com/app/accountInfo?acct=notmyacct
-15 broken access Bypassing access control checks by modifying the URL, internal application state, or the HTML page, or simply using a custom API attack tool.
-16 robot hidden content
-17 A6-Security Misconfiguration// old opencsd bufg -> .git commited and obtainable list of files, one includes login test with hardcoded credentials
-
-17 RCE robot.txt
-18 Remote File Inclusion - gallery?
-
+13 admin cookie
+14 broken access userid on url path
+15 broken access privileges checked on dispaying page not on appi
+16 Security Misconfiguration - hidden page with flag
+17 Security Misconfiguration - application will serve .git file
+18 RCE on admin page
+19 RFI
