@@ -1,5 +1,5 @@
 FROM flag-base
-ARG flagval=flag10
+ARG flag=flag11
 
 
 # Copy the current directory contents into the container at /app
@@ -10,7 +10,7 @@ COPY start.sh /app
 COPY static /app/static
 
 
-RUN echo "$flagval" >> /app/flag.txt
+RUN echo "$flag" >> /app/flag.txt
 
 EXPOSE 8080
 

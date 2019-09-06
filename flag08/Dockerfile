@@ -1,16 +1,14 @@
 FROM flag-base
-ARG flagval=flag12
-
+ARG flag=flag8
 
 # Copy the current directory contents into the container at /app
 COPY webapp.py /app
 COPY start.sh /app
 
-
 COPY static /app/static
+COPY users.txt  /app
 
-
-RUN echo "$flagval" >> /app/flag.txt
+RUN echo "$flag" >> /app/flag.txt
 
 EXPOSE 8080
 

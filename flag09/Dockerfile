@@ -1,16 +1,16 @@
 FROM flag-base
-ARG flagval=flag6
+ARG flag=flag9
 
-# install SQLite
-RUN apt-get install sqlite3 libsqlite3-dev
 
 # Copy the current directory contents into the container at /app
 COPY webapp.py /app
 COPY start.sh /app
 
+
 COPY static /app/static
-COPY database.db /app
-RUN sqlite3 database.db "insert into tblflag( 'flag' ) values ( '${flagval}' )"
+
+
+RUN echo "$flag" >> /app/flag.txt
 
 EXPOSE 8080
 

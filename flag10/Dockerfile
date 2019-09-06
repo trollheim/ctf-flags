@@ -1,5 +1,5 @@
 FROM flag-base
-ARG flagval=flag10
+ARG flag=flag10
 
 
 # Copy the current directory contents into the container at /app
@@ -16,7 +16,7 @@ COPY data /app/data
 COPY hackedusers.txt /app
 COPY users.txt /app
 
-RUN echo "$flagval" >> /app/flag.txt
+RUN echo "$flag" >> /app/flag.txt
 
 EXPOSE 8080
 

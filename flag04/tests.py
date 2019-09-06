@@ -1,4 +1,4 @@
-from flag4.webapp import  HelloWorld;
+from flag04.webapp import  HelloWorld;
 
 hello = HelloWorld();
 

@@ -1,4 +1,4 @@
-from flag3.webapp import  Flag03;
+from flag03.webapp import  Flag03;
 
 flag = Flag03();
 

@@ -15,6 +15,7 @@ class User:
         return self.user == usr and self.password == pwd
 
 
+
     content = "";
 
 
@@ -31,7 +32,15 @@ with open('users.txt') as csv_file:
         users.append(User(row[0],row[1]))
 
 
-class Flag13:
+
+class Flag01:
+
+
+
+
+    def filter(self,str):
+      return str
+
 
     @cherrypy.expose
     def index(self):
@@ -49,6 +58,17 @@ class Flag13:
                 # return "logged"
         raise cherrypy.HTTPRedirect('/')
 
+    def _cp_dispatch(self, vpath):
+
+        if len(vpath) == 2 and vpath.pop(0) == 'bot':
+            cherrypy.request.params['userid'] = vpath.pop(0)
+
+        return vpath
+
+    @cherrypy.expose
+    def bot(self, userid):
+        user = users[int(userid)]
+        return readFile("static/bot.html").replace("CONTENT", user.content)
 
 
     @cherrypy.expose
@@ -69,12 +89,8 @@ class Flag13:
     @cherrypy.expose
     def form(self, msg,flag):
         user = self.findUser()
-        user.content = '<div class="alert alert-info" role="alert">' +msg +'</div>' + user.content
+        user.content+= '<div class="alert alert-info" role="alert">' +filter(msg) +'</div>';
         raise cherrypy.HTTPRedirect('/')
-
-
-
-
 
     @cherrypy.expose
     def bform(self, msg,flag):
@@ -83,9 +99,6 @@ class Flag13:
         raise cherrypy.HTTPRedirect('/')
 
 if __name__ == '__main__':
-
-
-
     conf = {
         '/res':
             {'tools.staticdir.on': True,
@@ -103,6 +116,11 @@ if __name__ == '__main__':
         }
     }
     cherrypy.config.update({'server.socket_host': '0.0.0.0'})
-    cherrypy.quickstart(Flag13(), '/', conf)
+    cherrypy.quickstart(Flag01(), '/', conf)
+
+
+
+
+
 
 

@@ -15,6 +15,7 @@ COPY users.txt  /app
 
 COPY static /app/static
 COPY node /app/node
+RUN echo "$flag"
 RUN echo "$flag" >> /app/flag.txt
 
 # Make port 80 available to the world outside this container

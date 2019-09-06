@@ -1,19 +1,16 @@
 FROM flag-base
-ARG flagval=flag7
+ARG flag=flag6
 
+# install SQLite
+RUN apt-get install sqlite3 libsqlite3-dev
 
-
-RUN apt-get update && apt-get install -y mongodb
 # Copy the current directory contents into the container at /app
 COPY webapp.py /app
 COPY start.sh /app
-COPY inseruser.js /app
 
 COPY static /app/static
-
-RUN pip3 install pymongo
-
-RUN echo "$flagval" >> /app/flag.txt
+COPY database.db /app
+RUN sqlite3 database.db "insert into tblflag( 'flag' ) values ( '${flag}' )"
 
 EXPOSE 8080
 
