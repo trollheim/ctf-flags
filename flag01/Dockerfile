@@ -1,4 +1,5 @@
-FROM flag-base
+FROM madtroll/myctf-base
+
 
 
 
