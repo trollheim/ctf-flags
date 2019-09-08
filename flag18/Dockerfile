@@ -10,7 +10,7 @@ ARG flag=flag13
 # Copy the current directory contents into the container at /app
 COPY webapp.py /app
 COPY start.sh /app
-RUN pip3 install cherrypy_cors
+
 
 COPY static /app/static
 

@@ -10,7 +10,7 @@ COPY start.sh /app
 
 COPY static /app/static
 COPY users.txt  /app
-RUN pip install pyjwt
+
 RUN echo "$flag" >> /app/flag.txt
 
 EXPOSE 8080

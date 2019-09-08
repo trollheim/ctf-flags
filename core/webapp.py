@@ -2,9 +2,9 @@
 import os, os.path
 import random
 import cherrypy
-import csv
+
 import sqlite3
-from sqlite3 import Error
+
 import hashlib
 import base64
 import binascii
@@ -52,8 +52,22 @@ def readFile(path):
 
 
 
+messages = {
+    -1 : "",
+     0 :  '<div class="alert alert-success" role="alert">Flag uploaded</div>',
+     1 : '<div class="alert alert-danger" role="alert">User not logged</div>',
+     2 : '<div class="alert alert-danger" role="alert">Invalid flag</div>',
+     3 : '<div class="alert alert-danger" role="alert">Invalid user credentials</div>'
+
+
+}
+
 
 class CoreSystem:
+
+
+
+
 
     def __init__(self):
         self.dbhelper = DbHelper('database.db')
@@ -62,7 +76,7 @@ class CoreSystem:
 
     def getFlagString(self,token,userid):
         print(type(userid))
-        flags = self.dbhelper.select("select chalenge from tblflags  where id not in (select id from tblflags  join tblflagsusers on id = flagid and userid =?)",userid)
+        flags = self.dbhelper.select("select chalenge from tblflags  where id not in (select id from tblflags  join tblflagsusers on id = flagid and userid =?) order by chalenge asc",userid)
         value = ""
         for flag in flags:
             value = value + '<option>'+flag[0]+'</option>'
@@ -71,10 +85,13 @@ class CoreSystem:
 
 
     @cherrypy.expose
-    def index(self):
+    def index(self,**args):
+        msg = -1
+        if 'msg' in args:
+            msg = int(args["msg"])
         if 'token' in cherrypy.session.keys():
-            return readFile("static/page.html").replace("FLAGIDS",self.getFlagString(cherrypy.session['token'],cherrypy.session['userid'])) #
-        return readFile("static/index.html")
+            return readFile("static/page.html").replace("FLAGIDS",self.getFlagString(cherrypy.session['token'],cherrypy.session['userid'])).replace("MESSAGE",messages[msg])
+        return readFile("static/index.html").replace("MESSAGE",messages[msg])
 
     @cherrypy.expose
     def login(self, user, password):
@@ -84,9 +101,9 @@ class CoreSystem:
                 token = base64.b64encode(hashlib.sha256(str(random.randint(0, 1024)).encode("ascii")).digest()).decode('ascii')
                 cherrypy.session['token'] = token
                 cherrypy.session['userid'] = user[0][0]
-                # return "logged"
+                raise cherrypy.HTTPRedirect('/')
 
-        raise cherrypy.HTTPRedirect('/')
+        raise cherrypy.HTTPRedirect('/?msg=3')
 
     @cherrypy.expose
     def submit(self,flagname='',flagvalue=''):

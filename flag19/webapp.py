@@ -1,11 +1,7 @@
 import os, os.path
-import random
-import cherrypy
-import csv
-import subprocess
-import cherrypy_cors
 
-cherrypy_cors.install()
+import cherrypy
+
 
 
 # ', len(sys.argv), 'arguments.'
@@ -55,7 +51,7 @@ if __name__ == '__main__':
         '/': {
             'tools.sessions.on': True,
             'tools.staticdir.root': os.path.abspath(os.getcwd()),
-            'cors.expose.on': True,
+
 
             # 'tools.auth_basic.checkpassword': validate_password,
 

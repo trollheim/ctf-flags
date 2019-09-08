@@ -9,10 +9,11 @@ run curl -sL https://deb.nodesource.com/setup_10.x |  bash -
 run apt-get update
 
 run apt-get install -y nodejs
+RUN apt-get update && apt-get install -y mongodb
 
 
 RUN apt-get install -y build-essential python3.6 python3.6-dev python3-pip python3.6-venv
-
+RUN apt-get install sqlite3 libsqlite3-dev
 
 # update pip
 RUN python3.6 -m pip install pip --upgrade
@@ -27,5 +28,7 @@ COPY users.txt /app
 run npm i puppeteer
 RUN python --version
 RUN pip install cherryPy
+RUN pip install pyjwt
+RUN pip3 install pymongo
 RUN pip3 install --trusted-host pypi.python.org -r requirements.txt
 #RUN pip install --trusted-host pypi.python.org -r requirements.txt

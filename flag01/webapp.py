@@ -89,7 +89,7 @@ class Flag01:
     @cherrypy.expose
     def form(self, msg,flag):
         user = self.findUser()
-        user.content = '<div class="alert alert-info" role="alert">' +filter(msg) +'</div>';
+        user.content = '<div class="alert alert-info" role="alert">' +self.filter(msg) +'</div>';
         raise cherrypy.HTTPRedirect('/')
 
     @cherrypy.expose
