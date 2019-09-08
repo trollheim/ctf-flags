@@ -17,17 +17,23 @@ def hashpass(password):
     return (salt + pwdhash).decode('ascii')
 
 conn = sqlite3.connect(FILENAME)
-conn.execute("CREATE TABLE IF NOT EXISTS tblusers (id integer PRIMARY KEY AUTOINCREMENT, uname text, passwd text);")
+conn.execute("CREATE TABLE IF NOT EXISTS tblusers (id integer PRIMARY KEY AUTOINCREMENT, uname text, passwd text,sessionkey text);")
 conn.execute("CREATE TABLE IF NOT EXISTS tblflags (id integer PRIMARY KEY AUTOINCREMENT, chalenge text, flag text);")
-conn.execute("CREATE TABLE IF NOT EXISTS tblflagsusers(flagid integer,userid integer, FOREIGN KEY(userid) REFERENCES tblusers(id), FOREIGN KEY(flagid) REFERENCES tblflags(id) );")
+conn.execute("CREATE TABLE IF NOT EXISTS tblflagsusers(flagid integer,userid integer,submmission integer, FOREIGN KEY(userid) REFERENCES tblusers(id), FOREIGN KEY(flagid) REFERENCES tblflags(id) );")
 
 users = []
 with open('users.txt') as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=':')
     for row in csv_reader:
         users.append((row[0], hashpass(row[1])))
-conn.executemany('INSERT INTO tblusers VALUES (?,?)', users)
+conn.executemany('INSERT INTO tblusers (uname, passwd) VALUES (?,?)', users)
 
+flags = []
+with open('flags.txt') as csv_file:
+    csv_reader = csv.reader(csv_file, delimiter=':')
+    for row in csv_reader:
+        flags.append((row[0], row[1]))
+conn.executemany('INSERT INTO tblflags(chalenge, flag) VALUES (?,?)', flags)
 
 
 

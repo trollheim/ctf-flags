@@ -1,4 +1,6 @@
-FROM flag-base
+FROM madtroll/myctf-base
+
+
 ARG flag=flag4
 
 # Set the working directory to /app

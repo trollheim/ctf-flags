@@ -1,5 +1,4 @@
-FROM flag-base
-
+FROM madtroll/myctf-base
 
 
 ARG flag=flag14

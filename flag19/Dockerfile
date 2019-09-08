@@ -1,8 +1,6 @@
-FROM flag-base
+FROM madtroll/myctf-base
 
-
-
-ARG flag=flag13
+ARG flag=flag19
 
 #FROM python:3.7-slim
 

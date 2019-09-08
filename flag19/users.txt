@@ -1,2 +1,2 @@
-est:test
-test2:test2
+user1:password1
+sss:sss

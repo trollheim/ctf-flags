@@ -1,4 +1,6 @@
-FROM flag-base
+FROM madtroll/myctf-base
+
+
 ARG flag=flag8
 
 # Copy the current directory contents into the container at /app

@@ -14,8 +14,7 @@ class User:
     def validate(self, usr, pwd):
         return self.user == usr and self.password == pwd
 
-
-
+    botcontent = ""
     content = "";
 
 
@@ -42,7 +41,7 @@ class Flag04:
     def index(self):
         if 'token' in cherrypy.session.keys():
             user = self.findUser()
-            return readFile("static/page.html").replace("CONTENT", user.content)
+            return readFile("static/page.html").replace("CONTENT", user.content+user.botcontent)
         return readFile("static/index.html")
 
     @cherrypy.expose
@@ -92,13 +91,13 @@ class Flag04:
         user = self.findUser()
 
 
-        user.content += self.payload(msg);
+        user.content = self.payload(self.filter(msg));
         raise cherrypy.HTTPRedirect('/')
 
     @cherrypy.expose
     def bform(self, msg, flag):
         for user in users:
-            user.content += self.payload(msg);
+            user.botcontent = self.payload(msg);
         raise cherrypy.HTTPRedirect('/')
 
 
