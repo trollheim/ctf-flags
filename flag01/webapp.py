@@ -59,9 +59,11 @@ class Flag01:
         raise cherrypy.HTTPRedirect('/')
 
     def _cp_dispatch(self, vpath):
-
-        if len(vpath) == 2 and vpath.pop(0) == 'bot':
-            cherrypy.request.params['userid'] = vpath.pop(0)
+        print("=================")
+        print(vpath)
+        print("=================")
+        if len(vpath) == 2 and vpath[0] == 'bot':
+            cherrypy.request.params['userid'] = vpath.pop(1)
 
         return vpath
 
@@ -93,9 +95,9 @@ class Flag01:
         raise cherrypy.HTTPRedirect('/')
 
     @cherrypy.expose
-    def bform(self, msg,flag):
-        for user in users:
-            user.botcontent= '<div class="alert alert-info" role="alert">' +msg +'</div>';
+    def bform(self, msg,flag,userid):
+        user = users[int(userid)]
+        user.botcontent= '<div class="alert alert-info" role="alert">' +msg +'</div>';
         raise cherrypy.HTTPRedirect('/')
 
 if __name__ == '__main__':

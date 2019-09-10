@@ -53,6 +53,8 @@ function sleep(ms){
            await page.type('#msg', 'message');
            await page.waitFor('#flag');
            await page.type('#flag', flag);
+           await page.waitFor('#userid');
+           await page.type('#userid', ""+i);
            await page.waitFor('#submit');
            await page.click('#submit');
        } catch (e) {

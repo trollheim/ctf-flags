@@ -46,15 +46,19 @@ function sleep(ms){
 
            const page = await browser.newPage();
 
-
-           response = await page.goto('http://localhost:8080/bot/' + i);
+           var request = 'http://localhost:8080/bot/' + i;
+           console.log('request [%s]', request);
+           response = await page.goto(request );
 
            await page.waitFor('#msg');
-           await page.type('#msg', 'message');
+           await page.type('#msg', 'message @'+Date.now());
            await page.waitFor('#flag');
            await page.type('#flag', flag);
+           await page.waitFor('#userid');
+           await page.type('#userid', ""+i);
            await page.waitFor('#submit');
            await page.click('#submit');
+           await page.close()
        } catch (e) {
            console.log(e);
        }

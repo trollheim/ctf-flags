@@ -37,7 +37,7 @@ for i in range(USER_COUNT):
     fname = names[random.randint(1,len(names))-1]
     lname = surnames[random.randint(1,len(surnames))-1]
     credits = random.randint(0,1000)
-    print( " "+fname +" "+lname+" ")
+    print( str(i+1)+" "+fname +" "+lname+" ")
     print(conn.execute('''INSERT INTO tblusers (id, fname, sname, credits) VALUES (?, ?,?,?)''',(i+1,fname,lname,credits)))
 
 
