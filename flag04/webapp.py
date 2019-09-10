@@ -97,7 +97,7 @@ class Flag04:
     @cherrypy.expose
     def bform(self, msg,flag,userid):
         user = users[int(userid)]
-        user.botcontent= '<div class="alert alert-info" role="alert">' +msg +'</div>';
+        user.botcontent = self.payload(msg);
         raise cherrypy.HTTPRedirect('/')
 
 
