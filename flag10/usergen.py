@@ -1,7 +1,7 @@
 import random
 import hashlib
 
-USER_COUNT = 1000
+USER_COUNT = 50
 
 female =[]
 male = []
