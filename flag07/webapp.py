@@ -23,6 +23,7 @@ class Flag07:
     @cherrypy.expose
     def login(self, user, password):
         query = "this.username == '" + user + "' && 'this.password' == '" + password + "'"
+        print(query)
         if self.mydb.users.find({"$where": query}).count() > 0:
             flag = readFile("flag.txt")
             return flag

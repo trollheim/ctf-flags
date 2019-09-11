@@ -69,7 +69,7 @@ class Flag10:
                 if u.password == password:
                     flag = readFile("flag.txt")
                     return flag
-            raise cherrypy.HTTPRedirect('/?error=2')
+                raise cherrypy.HTTPRedirect('/?error=2')
 
 
         raise cherrypy.HTTPRedirect('/?error=1')

@@ -55,7 +55,7 @@ class Flag04:
     def _cp_dispatch(self, vpath):
 
         if len(vpath) == 2 and vpath.pop(0) == 'bot':
-            cherrypy.request.params['userid'] = vpath.pop(0)
+            cherrypy.request.params['userid'] = vpath.pop(1)
 
         return vpath
 

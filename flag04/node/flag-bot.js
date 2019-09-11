@@ -48,9 +48,10 @@ function sleep(ms){
 
 
            response = await page.goto('http://localhost:8080/bot/' + i);
-
+           var a= Math.floor(Math.random() * 100);
+           var b = Math.floor(Math.random() * 100);
            await page.waitFor('#msg');
-           await page.type('#msg', '1+1');
+           await page.type('#msg', a+'+'+b);
            await page.waitFor('#flag');
            await page.type('#flag', flag);
            await page.waitFor('#userid');
