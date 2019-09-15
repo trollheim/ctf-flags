@@ -1,7 +1,7 @@
 import random
 import hashlib
 
-USER_COUNT = 1000
+USER_COUNT = 50
 
 female =[]
 male = []
@@ -42,9 +42,8 @@ for i in range(USER_COUNT):
     fname = names[random.randint(1,len(names))-1]
     lname = surnames[random.randint(1,len(surnames))-1]
     password = passwords[random.randint(1, len(passwords)) - 1]
-    m = hashlib.new("md5")
-    m.update(x.encode("utf8"))
-    hashedpassword = m.hexdigest()
+    hashedpassword =  hashlib.md5(password.encode('ascii')).hexdigest()
+
     uname = (fname+"."+lname+"@pychain.io").lower()
     f.write(fname+":"+lname+":"+(uname+":").lower()+hashedpassword+"\n")
     if i==user:
