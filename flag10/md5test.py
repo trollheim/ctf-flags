@@ -8,17 +8,18 @@ end = time.time()
 print(end - start)
 
 xx ='ce601bb436d05cd27f070d5449375579'
-
+zz = '180552'
 start = time.time()
 f = open("data/passwords.txt", "r")
 i = 0;
 for x in f:
-    x ='180552'
+    x =x.strip()
+    if zz==x:
+        print(x)
     m = hashlib.new("md5")
     m.update(x.encode("utf8"))
     p = m.hexdigest()
     if p == xx:
-
         print(xx)
     i=i+1
     # if i % 1000 == 0:
