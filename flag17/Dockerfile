@@ -9,6 +9,7 @@ ARG flag=flag17
 # Copy the current directory contents into the container at /app
 COPY webapp.py /app
 COPY start.sh /app
+COPY testfile.py /app
 
 COPY static /app/static
 COPY git /app/git

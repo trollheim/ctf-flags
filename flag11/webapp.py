@@ -29,21 +29,24 @@ class Flag11:
     def index(self,**params):
         return readFile("static/index.html")
 
-
+    @cherrypy.tools.json_out()
     @cherrypy.expose
-    def parse(self,document):
-        if len (document)>1024:
+    def parse(self,xmldocument):
+        if len (xmldocument)>1024:
             return "File is too big"
 
         q = multiprocessing.Queue()
-        p = multiprocessing.Process(target=parse, name="XMLParse", args=(document,q))
+        p = multiprocessing.Process(target=parse, name="XMLParse", args=(xmldocument,q))
         p.start()
         p.join(10)
 
         if p.is_alive():
-            p.terminate()
-            p.kill()
-            p.join()
+            try:
+                p.terminate()
+                p.kill()
+                p.join()
+            except:
+                pass
             return readFile("flag.txt")
 
         if q.get() != True:

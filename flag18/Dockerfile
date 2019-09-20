@@ -13,7 +13,7 @@ COPY start.sh /app
 
 
 COPY static /app/static
-
+run apt-get install iputils-ping -y
 RUN echo "$flag" >> /etc/flag.txt
 
 # Make port 80 available to the world outside this container
