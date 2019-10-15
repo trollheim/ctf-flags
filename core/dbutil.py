@@ -17,7 +17,7 @@ def hashpass(password):
     return (salt + pwdhash).decode('ascii')
 
 conn = sqlite3.connect(FILENAME)
-conn.execute("CREATE TABLE IF NOT EXISTS tblusers (id integer PRIMARY KEY AUTOINCREMENT, uname text, passwd text,sessionkey text);")
+conn.execute("CREATE TABLE IF NOT EXISTS tblusers (id integer PRIMARY KEY AUTOINCREMENT, uname text UNIQUE, passwd text,sessionkey text);")
 conn.execute("CREATE TABLE IF NOT EXISTS tblflags (id integer PRIMARY KEY AUTOINCREMENT, chalenge text, flag text);")
 conn.execute("CREATE TABLE IF NOT EXISTS tblflagsusers(flagid integer,userid integer,submmission integer, FOREIGN KEY(userid) REFERENCES tblusers(id), FOREIGN KEY(flagid) REFERENCES tblflags(id) );")
 

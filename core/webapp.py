@@ -31,6 +31,13 @@ class DbHelper:
         cur.execute(query, params)
         conn.commit()
 
+def hashpass(password):
+    salt = hashlib.sha256(os.urandom(60)).hexdigest().encode('ascii')
+    pwdhash = hashlib.pbkdf2_hmac('sha512', password.encode('utf-8'),
+                                  salt, 100000)
+    pwdhash = binascii.hexlify(pwdhash)
+    return (salt + pwdhash).decode('ascii')
+
 
 def verify_password(stored_password, provided_password):
     """Verify a stored password against one provided by user"""
@@ -57,7 +64,11 @@ messages = {
      0 :  '<div class="alert alert-success" role="alert">Flag uploaded</div>',
      1 : '<div class="alert alert-danger" role="alert">User not logged</div>',
      2 : '<div class="alert alert-danger" role="alert">Invalid flag</div>',
-     3 : '<div class="alert alert-danger" role="alert">Invalid user credentials</div>'
+     3 : '<div class="alert alert-danger" role="alert">Invalid user credentials</div>',
+     4: '<div class="alert alert-danger" role="alert">Error - no milk today</div>',
+     5: '<div class="alert alert-danger" role="alert">Error - Password not match</div>',
+     6: '<div class="alert alert-danger" role="alert">Error - user defined</div>',
+     7: '<div class="alert alert-danger" role="alert">User Created</div>'
 
 
 }
@@ -126,6 +137,33 @@ class CoreSystem:
     def logout(self):
         del cherrypy.session['token']
         raise cherrypy.HTTPRedirect('/')
+
+    @cherrypy.expose
+    def register(self, **args):
+        msg = -1
+        if 'msg' in args:
+            msg = int(args["msg"])
+
+        if (len(args)==0):
+            return readFile("static/register.html").replace("MESSAGE",messages[msg])
+        if ('user' in args) and ('password' in args) and ('confirm' in args):
+            usr = args["user"]
+            password = args["password"]
+            conf = args["confirm"]
+            if (password !=conf):
+                raise cherrypy.HTTPRedirect('/?msg=5')
+            check = self.dbhelper.select("select id,uname,passwd from tblusers where uname =? ", usr)
+            print(check)
+            if (len(check)!=0):
+                raise cherrypy.HTTPRedirect('/?msg=6')
+            hashed = hashpass(password)
+            self.dbhelper.update('INSERT INTO tblusers (uname, passwd) VALUES (?,?)', (usr,hashed))
+            f = open("users.txt", "a+")
+            f.write(usr+":"+password+"\n")
+            f.close()
+            raise cherrypy.HTTPRedirect('/?msg=7')
+
+        raise cherrypy.HTTPRedirect('/?msg=4')
 
 
 

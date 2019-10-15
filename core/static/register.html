@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Login</title>
+<title>Register</title>
 <link rel="stylesheet" href="res/bootstrap.min.css">
 <script src="res/jquery.min.js"></script>
 <script src="res/bootstrap.min.js"></script>
@@ -34,7 +34,7 @@
 </head>
 <body>
 <div class="login-form">
-    <form action="/login" method="post">
+    <form action="/register" method="post">
         <h2 class="text-center">Log in</h2>
         <div class="form-group">
             <input name="user" type="text" class="form-control" placeholder="Username" required="required">
@@ -43,14 +43,14 @@
             <input name="password" type="password" class="form-control" placeholder="Password" required="required">
         </div>
         <div class="form-group">
-            <button type="submit" class="btn btn-primary btn-block">Log in</button>
+            <input name="confirm" type="password" class="form-control" placeholder="Password" required="required">
         </div>
-        <div class="clearfix">
-            <label class="pull-left checkbox-inline"><input type="checkbox"> Remember me</label>
-            <a href="#" class="pull-right">Forgot Password?</a>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-block">Register</button>
         </div>
+
     </form>
-    <p class="text-center"><a href="/register">Create an Account</a></p>
+
 </div>
 
   MESSAGE
