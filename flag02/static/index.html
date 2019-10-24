@@ -31,10 +31,21 @@
         font-weight: bold;
     }
 </style>
+    <script>
+function validateForm() {
+
+    if (document.forms["someForm"]["msg"].value === "" && document.forms["someForm"]["flag"].value === "") {
+        alert("please fill the form");
+        return false;
+    }
+}
+
+
+</script>
 </head>
 <body>
 <div class="login-form">
-    <form action="/login" method="post">
+    <form name="someForm"  action="/login" method="post">
         <h2 class="text-center">Log in</h2>
         <div class="form-group">
             <input name="user" type="text" class="form-control" placeholder="Username" required="required">

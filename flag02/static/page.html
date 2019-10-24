@@ -26,7 +26,7 @@ function validateForm() {
 </nav>
 
 
-<form action="/form" onsubmit="return validateForm()" method="post">
+<form name="someForm" action="/form" onsubmit="return validateForm()" method="post">
   <div class="form-group">
     <label for="messageIn">Stored message will go here</label>
     <input type="text" class="form-control" name="msg" id="messageIn" aria-describedby="msgHelp" placeholder="Enter message">
